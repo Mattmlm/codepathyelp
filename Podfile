@@ -1,7 +1,7 @@
 platform :ios, '9.0'
 use_frameworks!
 pod 'AFNetworking'
-pod 'BDBOAuth1Manager'
+pod 'BDBOAuth1Manager', '~> 1.5.0'
 
 post_install do |installer|
   directory = installer.config.project_pods_root + 'BDBOAuth1Manager/BDBOAuth1Manager'
@@ -10,7 +10,6 @@ post_install do |installer|
   	puts Dir.entries(directory)
   	Dir.entries(directory).each do |filename|
   	  full_path = directory + filename
-  	  puts full_path
   	  if File.file?(full_path)
   	    text = File.read(full_path)
   		new_contents = text.gsub(/#import "(AF.+)"/, '#import <AFNetworking/\1>')
