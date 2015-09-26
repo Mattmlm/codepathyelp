@@ -33,7 +33,7 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
 //        })
         
         Business.searchWithTerm("Restaurants", sort: .Distance, categories: ["asianfusion", "burgers"], deals: true) { (businesses: [Business]!, error: NSError!) -> Void in
-            self.businesses = businesses
+            self.businesses = businesses as NSArray as! [Business]
             self.tableView.reloadData()
             for business in businesses {
                 print(business.name!)
