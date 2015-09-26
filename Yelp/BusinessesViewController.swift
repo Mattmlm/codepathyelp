@@ -20,17 +20,10 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         tableView.delegate = self;
         tableView.dataSource = self;
         
-        tableView.estimatedRowHeight = 100;
+        tableView.estimatedRowHeight = 120;
         tableView.rowHeight = UITableViewAutomaticDimension;
-
-//        Business.searchWithTerm("Thai", completion: { (businesses: [Business]!, error: NSError!) -> Void in
-//            self.businesses = businesses
-//            
-//            for business in businesses {
-//                println(business.name!)
-//                println(business.address!)
-//            }
-//        })
+        
+        self.navigationItem.title = "Yelp"
         
         Business.searchWithTerm("Restaurants", sort: .Distance, categories: ["asianfusion", "burgers"], deals: true) { (businesses: [Business]!, error: NSError!) -> Void in
             self.businesses = businesses as NSArray as! [Business]
