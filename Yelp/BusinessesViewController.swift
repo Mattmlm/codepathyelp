@@ -23,8 +23,6 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         tableView.estimatedRowHeight = 120;
         tableView.rowHeight = UITableViewAutomaticDimension;
         
-        self.navigationItem.title = "Yelp"
-        
         Business.searchWithTerm("Restaurants", sort: .Distance, categories: ["asianfusion", "burgers"], deals: true, distance: nil) { (businesses: [Business]!, error: NSError!) -> Void in
             self.businesses = businesses as NSArray as! [Business]
             self.tableView.reloadData()
