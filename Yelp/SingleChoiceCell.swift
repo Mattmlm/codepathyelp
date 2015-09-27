@@ -1,23 +1,17 @@
 //
-//  SwitchCell.swift
+//  SingleChoiceCell.swift
 //  Yelp
 //
-//  Created by admin on 9/26/15.
+//  Created by admin on 9/27/15.
 //  Copyright © 2015 Timothy Lee. All rights reserved.
 //
 
 import UIKit
 
-protocol SwitchCellDelegate: class {
-    func switchCellDidToggle(cell: SwitchCell, newValue: Bool);
-}
+class SingleChoiceCell: UITableViewCell {
 
-class SwitchCell: UITableViewCell {
-
-    @IBOutlet weak var switchLabel: UILabel!;
-    @IBOutlet weak var onSwitch: UISwitch!;
-    
-    weak var delegate: SwitchCellDelegate?;
+    @IBOutlet weak var preferenceLabel: UILabel!
+    @IBOutlet weak var checkMarkImageView: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib();
@@ -27,15 +21,14 @@ class SwitchCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse();
     }
-
+    
     override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
+        
         // Configure the view for the selected state
     }
     
-    @IBAction func didToggleSwitch(sender: AnyObject) {
-        delegate?.switchCellDidToggle(self, newValue: onSwitch.on);
+    func setCheckMarkSelected(selected: Bool) {
+        self.checkMarkImageView.hidden = !selected;
     }
-
 }

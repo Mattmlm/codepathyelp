@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="RvE-hk-yu7">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="5Qi-k1-Akg">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
@@ -182,27 +182,62 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3DP-fe-rKG">
-                                                    <rect key="frame" x="13" y="23.5" width="42" height="20.5"/>
+                                                    <rect key="frame" x="13" y="29" width="42" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NXt-Wt-Pkk">
-                                                    <rect key="frame" x="253" y="18" width="51" height="31"/>
+                                                    <rect key="frame" x="253" y="24.5" width="51" height="31"/>
+                                                    <connections>
+                                                        <action selector="didToggleSwitch:" destination="PjX-kj-WGd" eventType="valueChanged" id="CPB-Dp-eYu"/>
+                                                    </connections>
                                                 </switch>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="NXt-Wt-Pkk" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="3DP-fe-rKG" secondAttribute="trailing" constant="15" id="A6o-9x-ELW"/>
-                                                <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="NXt-Wt-Pkk" secondAttribute="bottom" constant="10" id="Rn3-Gl-Cz9"/>
-                                                <constraint firstItem="NXt-Wt-Pkk" firstAttribute="top" secondItem="QTT-v9-qMw" secondAttribute="topMargin" constant="10" id="WR5-eZ-56V"/>
+                                                <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="NXt-Wt-Pkk" secondAttribute="bottom" constant="5" id="Rn3-Gl-Cz9"/>
+                                                <constraint firstItem="NXt-Wt-Pkk" firstAttribute="centerY" secondItem="QTT-v9-qMw" secondAttribute="centerY" id="WuA-mX-T4P"/>
                                                 <constraint firstItem="3DP-fe-rKG" firstAttribute="centerY" secondItem="NXt-Wt-Pkk" secondAttribute="centerY" id="YP0-nd-YKv"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="NXt-Wt-Pkk" secondAttribute="trailing" constant="10" id="idY-4f-Oyh"/>
                                                 <constraint firstItem="3DP-fe-rKG" firstAttribute="leading" secondItem="QTT-v9-qMw" secondAttribute="leadingMargin" constant="5" id="vMr-FO-sHE"/>
+                                                <constraint firstItem="NXt-Wt-Pkk" firstAttribute="top" relation="greaterThanOrEqual" secondItem="QTT-v9-qMw" secondAttribute="topMargin" constant="5" id="xPh-Oh-i3d"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="onSwitch" destination="NXt-Wt-Pkk" id="C7A-Fv-PLT"/>
                                             <outlet property="switchLabel" destination="3DP-fe-rKG" id="Si5-eL-LT4"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SingleChoiceCell" id="2Yr-Ld-cFL" customClass="SingleChoiceCell" customModule="Yelp" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="172" width="320" height="100"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2Yr-Ld-cFL" id="pkb-g8-43Y">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="99.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="check mark" translatesAutoresizingMaskIntoConstraints="NO" id="tiM-ev-IwH" userLabel="Check Mark Image View">
+                                                    <rect key="frame" x="271" y="38.5" width="26" height="23"/>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2ky-R8-O5F">
+                                                    <rect key="frame" x="13" y="39.5" width="42" height="20.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="tiM-ev-IwH" firstAttribute="top" relation="greaterThanOrEqual" secondItem="pkb-g8-43Y" secondAttribute="topMargin" constant="5" id="8kH-Cf-EN5"/>
+                                                <constraint firstItem="2ky-R8-O5F" firstAttribute="centerY" secondItem="tiM-ev-IwH" secondAttribute="centerY" id="AYO-VI-Rlc"/>
+                                                <constraint firstItem="tiM-ev-IwH" firstAttribute="centerY" secondItem="pkb-g8-43Y" secondAttribute="centerY" id="Fbc-aL-wdK"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="tiM-ev-IwH" secondAttribute="trailing" constant="15" id="JY6-jy-5Wt"/>
+                                                <constraint firstItem="tiM-ev-IwH" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="2ky-R8-O5F" secondAttribute="trailing" constant="15" id="YrT-Xx-is1"/>
+                                                <constraint firstItem="2ky-R8-O5F" firstAttribute="leading" secondItem="pkb-g8-43Y" secondAttribute="leadingMargin" constant="5" id="iLU-Ca-c41"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="checkMarkImageView" destination="tiM-ev-IwH" id="geN-6P-WQJ"/>
+                                            <outlet property="preferenceLabel" destination="2ky-R8-O5F" id="2Mo-5a-4Wm"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -255,4 +290,7 @@
             <point key="canvasLocation" x="1865" y="382"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="check mark" width="26" height="23"/>
+    </resources>
 </document>

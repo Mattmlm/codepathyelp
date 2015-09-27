@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, SwitchCellDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     
@@ -33,7 +33,7 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
 
     override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
+        super.didReceiveMemoryWarning();
         // Dispose of any resources that can be recreated.
     }
     
@@ -65,47 +65,74 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("SwitchCell", forIndexPath: indexPath) as! SwitchCell;
+        var cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("SwitchCell", forIndexPath: indexPath);
         switch indexPath.section {
-        case 0:
-            cell.switchLabel.text = "Offering a Deal";
-        case 1:
-            cell.switchLabel.text = distanceFilterNames[indexPath.row];
-        case 2:
-            cell.switchLabel.text = sortByFilters[indexPath.row];
-        case 3:
-            cell.switchLabel.text = categoryFilters[indexPath.row]["name"]!;
+        case let section where section == 0 || section == 3:
+            let switchCell = tableView.dequeueReusableCellWithIdentifier("SwitchCell", forIndexPath: indexPath) as! SwitchCell;
+            if section == 0 {
+                switchCell.switchLabel.text = "Offering a Deal";
+            } else if section == 3 {
+                switchCell.switchLabel.text = categoryFilters[indexPath.row]["name"]!;
+            }
+            switchCell.onSwitch.on = self.preferences![indexPath.section][indexPath.row];
+            switchCell.delegate = self;
+            cell = switchCell;
+        case let section where section == 1 || section == 2:
+            let singleChoiceCell = tableView.dequeueReusableCellWithIdentifier("SingleChoiceCell", forIndexPath: indexPath) as! SingleChoiceCell;
+            if section == 1 {
+                singleChoiceCell.preferenceLabel.text = distanceFilterNames[indexPath.row];
+            } else if section == 2 {
+                singleChoiceCell.preferenceLabel.text = sortByFilters[indexPath.row];
+            }
+            singleChoiceCell.setCheckMarkSelected(self.preferences![indexPath.section][indexPath.row]);
+            cell = singleChoiceCell;
         default:
             break;
         }
-        
-        cell.onSwitch.on = self.preferences![indexPath.section][indexPath.row];
-        
         return cell;
     }
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        NSLog("indexPath selected: \(indexPath)");
+        if indexPath.section == 1 || indexPath.section == 2 {
+            for index in 0...self.preferences![indexPath.section].count - 1 {
+                self.preferences![indexPath.section][index] = false;
+            }
+            self.preferences![indexPath.section][indexPath.row] = true;
+            self.updateVisibleCells();
+        }
+        tableView.deselectRowAtIndexPath(indexPath, animated: true);
+    }
+    
+    private func updateVisibleCells() {
+        for cell in tableView.visibleCells {
+            if let indexPath = tableView.indexPathForCell(cell) {
+                if let singleChoiceCell = cell as? SingleChoiceCell {
+                    singleChoiceCell.setCheckMarkSelected(self.preferences![indexPath.section][indexPath.row]);
+                }
+            }
+        }
     }
     
     @IBAction func onCancelButtonPressed(sender: AnyObject) {
-        dismissViewControllerAnimated(true, completion: nil)
+        dismissViewControllerAnimated(true, completion: nil);
     }
     @IBAction func onSearchButtonPressed(sender: AnyObject) {
-        dismissViewControllerAnimated(true, completion: nil)
+        dismissViewControllerAnimated(true, completion: nil);
     }
     
-//    func preferenceSwitchCellDidToggle(cell: PreferenceSwitchCell, newValue: Bool) {
-//        prefValues[cell.prefRowIdentifier] = newValue
-//    }
+    func switchCellDidToggle(cell: SwitchCell, newValue: Bool) {
+        if let indexPath = tableView.indexPathForCell(cell) {
+            preferences![indexPath.section][indexPath.row] = newValue;
+        }
+    }
     
-    func loadSelectedValues() {
+    private func loadSelectedValues() {
         let categoriesPreferences = [Bool](count: self.categoryFilters.count, repeatedValue: false);
         self.preferences = [
             [true], // Deals
             [true, false, false, false, false], // Distance
             [true, false, false], // Sort By
             categoriesPreferences
-        ]
+        ];
     }
 }
