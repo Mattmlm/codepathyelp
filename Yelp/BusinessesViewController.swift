@@ -60,7 +60,11 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
     
     private func searchWithTerm(term: String, sort: YelpSortMode?, categories: [String]?, deals: Bool?, distance: NSNumber?) {
         Business.searchWithTerm(term, sort: sort, categories: categories, deals: deals, distance: distance) { (businesses: [Business]!, error: NSError!) -> Void in
-            self.businesses = businesses as NSArray as! [Business]
+            if (businesses != nil) {
+                self.businesses = businesses as NSArray as! [Business]
+            } else {
+                self.businesses = [];
+            }
             self.tableView.reloadData()
             for business in businesses {
                 print(business.name!)
