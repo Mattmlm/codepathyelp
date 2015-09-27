@@ -128,7 +128,7 @@
                     <navigationItem key="navigationItem" title="Yelp" id="a2C-vr-Y4E">
                         <barButtonItem key="leftBarButtonItem" title="Filters" id="Hqm-OV-noS">
                             <connections>
-                                <segue destination="RvE-hk-yu7" kind="modal" id="ZgH-fl-0eS"/>
+                                <segue destination="RvE-hk-yu7" kind="modal" identifier="loadFilters" id="ZgH-fl-0eS"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

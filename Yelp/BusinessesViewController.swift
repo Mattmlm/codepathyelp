@@ -8,9 +8,9 @@
 
 import UIKit
 
-class BusinessesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class BusinessesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, FiltersViewControllerDelegate {
 
-    var businesses: [Business]!
+    private var businesses: [Business]!
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -38,6 +38,7 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         // Dispose of any resources that can be recreated.
     }
 
+    // MARK: - TableView
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1;
     }
@@ -56,14 +57,44 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         cell.business = businesses[indexPath.row]
         return cell;
     }
-    /*
+    
+    private func searchWithTerm(term: String, sort: YelpSortMode?, categories: [String]?, deals: Bool?, distance: NSNumber?) {
+        Business.searchWithTerm(term, sort: sort, categories: categories, deals: deals, distance: distance) { (businesses: [Business]!, error: NSError!) -> Void in
+            self.businesses = businesses as NSArray as! [Business]
+            self.tableView.reloadData()
+            for business in businesses {
+                print(business.name!)
+                print(business.address!)
+            }
+        }
+    }
+    
+    // MARK: - FiltersViewControllerDelegate
+    func filtersViewController(filtersViewController: FiltersViewController, didUpdateFilters filters: [String : AnyObject]) {
+        let sort = YelpSortMode(rawValue: filters["sort"] as! Int);
+        let categories = filters["categories"] as! [String];
+        let deals = filters["deals"] as! Bool;
+        let distance = filters["distance"] as! Double
+        if distance == -1 {
+            self.searchWithTerm("Restaurants", sort: sort, categories: categories, deals: deals, distance: nil);
+        } else {
+            self.searchWithTerm("Restaurants", sort: sort, categories: categories, deals: deals, distance: NSNumber(double: distance));
+        }
+    }
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        if segue.identifier == "loadFilters" {
+            if let navVC = segue.destinationViewController as? UINavigationController {
+                if let vc = navVC.topViewController as? FiltersViewController {
+                    vc.delegate = self;
+                }
+            }
+        }
     }
-    */
 
 }

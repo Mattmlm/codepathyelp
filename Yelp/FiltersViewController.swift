@@ -8,15 +8,23 @@
 
 import UIKit
 
+@objc protocol FiltersViewControllerDelegate {
+    optional func filtersViewController (filtersViewController: FiltersViewController, didUpdateFilters filters: [String: AnyObject]);
+}
+
 class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, SwitchCellDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     
+    weak var delegate: FiltersViewControllerDelegate?;
+    
     var filterSections: [String] = ["Deals", "Distance", "Sort By", "Categories"];
     var distanceFilterNames: [String] = ["Auto", "2 blocks", "6 blocks", "1 mile", "5 miles"];
     var distanceFilterValues: [Double] = [-1, 0.25, 0.75, 1, 5];
+    var distanceSelected: Int = 0;
     var categoryFilters: [[String : String]] = YelpCategories.categories;
-    var sortByFilters: [String] = ["Best Matched", "Distance", "Highest Rated"];
+    var sortByFiltersNames: [String] = ["Best Matched", "Distance", "Highest Rated"];
+    var sortSelected: Int = 0;
     var preferences: [[Bool]]?;
     
     
@@ -48,7 +56,7 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
         case 1:
             return distanceFilterNames.count;
         case 2:
-            return sortByFilters.count;
+            return sortByFiltersNames.count;
         case 3:
             return categoryFilters.count;
         default:
@@ -82,7 +90,7 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
             if section == 1 {
                 singleChoiceCell.preferenceLabel.text = distanceFilterNames[indexPath.row];
             } else if section == 2 {
-                singleChoiceCell.preferenceLabel.text = sortByFilters[indexPath.row];
+                singleChoiceCell.preferenceLabel.text = sortByFiltersNames[indexPath.row];
             }
             singleChoiceCell.setCheckMarkSelected(self.preferences![indexPath.section][indexPath.row]);
             cell = singleChoiceCell;
@@ -96,6 +104,11 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
         if indexPath.section == 1 || indexPath.section == 2 {
             for index in 0...self.preferences![indexPath.section].count - 1 {
                 self.preferences![indexPath.section][index] = false;
+            }
+            if indexPath.section == 1 {
+                self.distanceSelected = indexPath.row;
+            } else if indexPath.section == 2 {
+                self.sortSelected = indexPath.row;
             }
             self.preferences![indexPath.section][indexPath.row] = true;
             self.updateVisibleCells();
@@ -117,7 +130,29 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
         dismissViewControllerAnimated(true, completion: nil);
     }
     @IBAction func onSearchButtonPressed(sender: AnyObject) {
+        self.delegate?.filtersViewController?(self, didUpdateFilters: self.processPreferences());
         dismissViewControllerAnimated(true, completion: nil);
+    }
+    
+    private func processPreferences() -> [String: AnyObject] {
+        let deals = preferences![0][0];
+        let distance = distanceFilterValues[distanceSelected];
+        let sort = sortSelected;
+        var categories : [String] = [];
+        for index in 0...preferences![3].count - 1 {
+            if (preferences![3][index]) {
+                categories.append(categoryFilters[index]["code"]!);
+            }
+        }
+        let preferencesToSearch = [
+            "deals" : deals,
+            "distance": distance,
+            "sort": sort,
+            "categories": categories,
+        ];
+        print(preferencesToSearch);
+        
+        return preferencesToSearch as! [String : AnyObject];
     }
     
     func switchCellDidToggle(cell: SwitchCell, newValue: Bool) {
