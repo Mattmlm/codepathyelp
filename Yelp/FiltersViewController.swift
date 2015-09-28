@@ -33,6 +33,10 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         self.loadSelectedValues();
         
+        self.navigationController?.navigationBar.barTintColor = UIColor(rgba: "#EB0103");
+        self.navigationController?.navigationBar.translucent = false;
+        self.navigationController?.navigationBar.tintColor = UIColor.whiteColor();
+        
         tableView.delegate = self;
         tableView.dataSource = self;
         

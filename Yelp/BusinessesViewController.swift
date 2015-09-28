@@ -24,6 +24,9 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         self.searchBar = UISearchBar();
         self.searchBar?.sizeToFit()
         self.searchBar?.delegate = self;
+        self.navigationController?.navigationBar.barTintColor = UIColor(rgba: "#EB0103");
+        self.navigationController?.navigationBar.translucent = false;
+        self.navigationController?.navigationBar.tintColor = UIColor.whiteColor();
         self.navigationItem.titleView = self.searchBar;
         
         tableView.estimatedRowHeight = 120;
@@ -62,6 +65,10 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         
         cell.business = businesses[indexPath.row]
         return cell;
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true);
     }
     
     // MARK: - SearchBar
