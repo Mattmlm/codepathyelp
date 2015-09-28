@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MBProgressHUD
 
 class BusinessesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, FiltersViewControllerDelegate, UISearchBarDelegate {
 
@@ -32,13 +33,19 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         tableView.estimatedRowHeight = 120;
         tableView.rowHeight = UITableViewAutomaticDimension;
         
+        MBProgressHUD.showHUDAddedTo(self.view, animated: true);
         Business.searchWithTerm("Restaurants", sort: .Distance, categories: ["asianfusion", "burgers"], deals: true, distance: nil) { (businesses: [Business]!, error: NSError!) -> Void in
-            self.businesses = businesses as NSArray as! [Business]
-            self.tableView.reloadData()
-            for business in businesses {
-                print(business.name!)
-                print(business.address!)
+            if (businesses != nil) {
+                self.businesses = businesses as NSArray as! [Business]
+                for business in businesses {
+                    print(business.name!)
+                    print(business.address!)
+                }
+            } else {
+                self.businesses = [];
             }
+            self.tableView.reloadData()
+            MBProgressHUD.hideHUDForView(self.view, animated: true);
         }
     }
 
@@ -80,6 +87,7 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
     // MARK: - Helper
     
     private func searchWithTerm(term: String, sort: YelpSortMode?, categories: [String]?, deals: Bool?, distance: NSNumber?) {
+        MBProgressHUD.showHUDAddedTo(self.view, animated: true);
         Business.searchWithTerm(term, sort: sort, categories: categories, deals: deals, distance: distance) { (businesses: [Business]!, error: NSError!) -> Void in
             if (businesses != nil) {
                 self.businesses = businesses as NSArray as! [Business]
@@ -91,6 +99,7 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
                 self.businesses = [];
             }
             self.tableView.reloadData()
+            MBProgressHUD.hideHUDForView(self.view, animated: true);
         }
     }
     
