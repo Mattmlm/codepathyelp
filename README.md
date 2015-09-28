@@ -41,4 +41,10 @@ I keep running into a malloc_error_break, and I'm not sure where it's coming fro
 
 ![Video Walkthrough](Yelp.gif)
 
-
+Credits
+---------
+* [Yelp API](https://www.yelp.com/developers/documentation/v2/overview)
+* [AFNetworking](https://github.com/AFNetworking/AFNetworking)
+* [BDBOAuth1Manager](https://github.com/bdbergeron/BDBOAuth1Manager)
+* [MBProgressHUD](https://github.com/jdg/MBProgressHUD)
+* [UIColor-Hex-Swift](https://github.com/yeahdongcn/UIColor-Hex-Swift)
