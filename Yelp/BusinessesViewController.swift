@@ -8,17 +8,23 @@
 
 import UIKit
 
-class BusinessesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, FiltersViewControllerDelegate {
+class BusinessesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, FiltersViewControllerDelegate, UISearchBarDelegate {
 
     private var businesses: [Business]!
     
     @IBOutlet weak var tableView: UITableView!
+    var searchBar: UISearchBar?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tableView.delegate = self;
         tableView.dataSource = self;
+        
+        self.searchBar = UISearchBar();
+        self.searchBar?.sizeToFit()
+        self.searchBar?.delegate = self;
+        self.navigationItem.titleView = self.searchBar;
         
         tableView.estimatedRowHeight = 120;
         tableView.rowHeight = UITableViewAutomaticDimension;
@@ -58,6 +64,14 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         return cell;
     }
     
+    // MARK: - SearchBar
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        self.searchWithTerm(searchBar.text!, sort: .Distance, categories: nil, deals: true, distance: nil);
+        searchBar.resignFirstResponder()
+    }
+    
+    // MARK: - Helper
+    
     private func searchWithTerm(term: String, sort: YelpSortMode?, categories: [String]?, deals: Bool?, distance: NSNumber?) {
         Business.searchWithTerm(term, sort: sort, categories: categories, deals: deals, distance: distance) { (businesses: [Business]!, error: NSError!) -> Void in
             if (businesses != nil) {
@@ -75,14 +89,18 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
     
     // MARK: - FiltersViewControllerDelegate
     func filtersViewController(filtersViewController: FiltersViewController, didUpdateFilters filters: [String : AnyObject]) {
+        var term = "Restaurants";
+        if (self.searchBar!.text?.characters.count != 0) {
+            term = self.searchBar!.text!;
+        }
         let sort = YelpSortMode(rawValue: filters["sort"] as! Int);
         let categories = filters["categories"] as! [String];
         let deals = filters["deals"] as! Bool;
         let distance = filters["distance"] as! Double
         if distance == -1 {
-            self.searchWithTerm("Restaurants", sort: sort, categories: categories, deals: deals, distance: nil);
+            self.searchWithTerm(term, sort: sort, categories: categories, deals: deals, distance: nil);
         } else {
-            self.searchWithTerm("Restaurants", sort: sort, categories: categories, deals: deals, distance: NSNumber(double: distance));
+            self.searchWithTerm(term, sort: sort, categories: categories, deals: deals, distance: NSNumber(double: distance));
         }
     }
     
