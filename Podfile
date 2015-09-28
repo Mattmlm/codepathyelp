@@ -1,13 +1,13 @@
 platform :ios, '9.0'
 use_frameworks!
-pod 'AFNetworking'
+pod 'AFNetworking', '~> 2.5.4'
 pod 'BDBOAuth1Manager', '~> 1.5.0'
+pod 'MBProgressHUD', '~> 0.9.1'
 
 post_install do |installer|
   directory = installer.config.project_pods_root + 'BDBOAuth1Manager/BDBOAuth1Manager'
   puts directory
   if File.directory?(directory)
-  	puts Dir.entries(directory)
   	Dir.entries(directory).each do |filename|
   	  full_path = directory + filename
   	  if File.file?(full_path)
